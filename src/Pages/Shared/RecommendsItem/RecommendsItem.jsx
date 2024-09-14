@@ -9,7 +9,7 @@ const RecommendsItem = ({ item }) => {
         <h2 className="font-bold text-xl text-center">{name}</h2>
         <p>{recipe}</p>
         <div className="card-actions justify-center">
-          <button className="btn btn-warning text-black dark:text-white hover:btn-neutral hover:text-yellow-500 ">
+          <button className="btn btn-warning hover:btn-neutral btn-outline border-0 border-b-4 ">
             Add To Cart
           </button>
         </div>

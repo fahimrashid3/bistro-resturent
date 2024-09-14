@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import SectionTitle from "../../../Compunents/SectionTitle/SectionTitle";
 import MenuItem from "../../Shared/MenuItem/MenuItem";
+import { Link } from "react-router-dom";
 
 const PopularMenu = () => {
   const [menu, setMenu] = useState([]);
@@ -25,6 +26,11 @@ const PopularMenu = () => {
           <MenuItem key={item._id} item={item}></MenuItem>
         ))}
       </div>
+      <Link className="mt-5 mx flex justify-center">
+        <button className="btn btn-warning hover:btn-neutral btn-outline border-0 border-b-4 ">
+          View Full Menu
+        </button>
+      </Link>
     </section>
   );
 };

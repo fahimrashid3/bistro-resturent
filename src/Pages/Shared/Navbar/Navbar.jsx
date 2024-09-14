@@ -1,5 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 
+import logo from "../../../assets/logo.png";
+
 const Navbar = () => {
   const links = (
     <>
@@ -47,8 +49,8 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <Link to="/" className="btn btn-ghost text-xl">
-          BISTRO BOSS
+        <Link to="/" className="btn btn-ghost">
+          <img className="h-12 lg:px-10 md:px-8 px-0" src={logo} alt="" />
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
