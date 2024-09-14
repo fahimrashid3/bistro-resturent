@@ -22,9 +22,10 @@ const Category = () => {
       ></SectionTitle>
       <div className="max-w-[80%] mx-auto">
         <Swiper
-          slidesPerView={4}
+          slidesPerView={3.5}
           spaceBetween={30}
           centeredSlides={true}
+          initialSlide={"initial"}
           pagination={{
             clickable: true,
           }}
@@ -49,7 +50,7 @@ const Category = () => {
               Soups
             </h3>
           </SwiperSlide>
-          <SwiperSlide>
+          <SwiperSlide id="initial">
             <img className="w-full" src={img4} alt="" />
             <h3 className="uppercase text-white text-4xl text-center -mt-16">
               dess
