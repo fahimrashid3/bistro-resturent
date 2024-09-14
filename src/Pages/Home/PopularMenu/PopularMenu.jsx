@@ -1,19 +1,11 @@
-import { useEffect, useState } from "react";
 import SectionTitle from "../../../Compunents/SectionTitle/SectionTitle";
 import MenuItem from "../../Shared/MenuItem/MenuItem";
 import { Link } from "react-router-dom";
+import useMenu from "../../../hooks/useManue";
 
 const PopularMenu = () => {
-  const [menu, setMenu] = useState([]);
-
-  useEffect(() => {
-    fetch("menu.json")
-      .then((res) => res.json())
-      .then((data) => {
-        const popularItems = data.filter((item) => item.category === "popular");
-        setMenu(popularItems);
-      });
-  }, []);
+  const [menu] = useMenu();
+  const popular = menu.filter((item) => item.category === "popular");
 
   return (
     <section>
@@ -22,7 +14,7 @@ const PopularMenu = () => {
         subHeading={"Check it out"}
       ></SectionTitle>
       <div className="grid md:grid-cols-2 lg:gap-10 md:gap-6 gap-4">
-        {menu.map((item) => (
+        {popular.map((item) => (
           <MenuItem key={item._id} item={item}></MenuItem>
         ))}
       </div>
