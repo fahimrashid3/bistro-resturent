@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-
+import { CgProfile } from "react-icons/cg";
 import logo from "../../../assets/logo.png";
 
 const Navbar = () => {
@@ -11,15 +11,15 @@ const Navbar = () => {
       <li>
         <NavLink to="/menu">Our Menu</NavLink>
       </li>
+
+      <li>
+        <NavLink to="/order/pizza">Order Food</NavLink>
+      </li>
       <li>
         <NavLink to="/contactUs">Contact Us</NavLink>
       </li>
       <li>
         <NavLink to="/dashboard">Dashboard</NavLink>
-      </li>
-
-      <li>
-        <NavLink to="/outShop">Our Shop</NavLink>
       </li>
     </>
   );
@@ -59,18 +59,22 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="btn m-1 btn-ghost">
-            Click
+          <div
+            tabIndex={0}
+            role="button"
+            className=" pr-5 text-4xl dark:text-dark-900 dark:hover:text-dark-700 text-white hover:text-gray-300"
+          >
+            <CgProfile />
           </div>
           <ul
             tabIndex={0}
-            className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+            className="dropdown-content menu bg-dark-900 text-white dark:bg-gray-400 dark:text-dark-900  rounded-box z-[1] w-52 p-2 shadow"
           >
             <li>
-              <a>Item 1</a>
+              <Link>Profile</Link>
             </li>
             <li>
-              <a>Item 2</a>
+              <Link to="/login">Login</Link>
             </li>
           </ul>
         </div>

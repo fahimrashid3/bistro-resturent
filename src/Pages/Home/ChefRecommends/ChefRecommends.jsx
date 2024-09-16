@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SectionTitle from "../../../Compunents/SectionTitle/SectionTitle";
-import RecommendsItem from "../../Shared/RecommendsItem/RecommendsItem";
+import ItemCard from "../../Shared/ItemCard/ItemCard";
 
 const ChefRecommends = () => {
   const [recommends, setRecommends] = useState([]);
@@ -22,7 +22,7 @@ const ChefRecommends = () => {
 
       <div className="grid lg:grid-cols-4 md:grid-cols-2 lg:gap-5 md:gap-8 px-5 md:px-0 space-y-8 md:space-y-0">
         {recommends.map((item) => (
-          <RecommendsItem key={item._id} item={item}></RecommendsItem>
+          <ItemCard key={item._id} item={item}></ItemCard>
         ))}
       </div>
     </div>

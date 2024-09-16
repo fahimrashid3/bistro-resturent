@@ -3,7 +3,7 @@ import { Parallax } from "react-parallax";
 const Cover = ({ img, title }) => {
   return (
     <Parallax
-      blur={{ min: -40, max: 40 }}
+      blur={{ min: -20, max: 20 }}
       bgImage={img}
       bgImageAlt={title}
       strength={-200}
