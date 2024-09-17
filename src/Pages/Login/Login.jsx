@@ -10,11 +10,15 @@ import {
   LoadCanvasTemplate,
   validateCaptcha,
 } from "react-simple-captcha";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../Providers/AuthProvider/AuthProvider";
+import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
-  const captchaRef = useRef(null);
   const [disabled, setDisabled] = useState(true);
+
+  const { signIn } = useContext(AuthContext);
 
   useEffect(() => {
     loadCaptchaEnginge(6);
@@ -26,10 +30,30 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
     console.log(email, password);
+
+    signIn(email, password)
+      .then((userCredential) => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Logged in successfully ",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
   };
 
-  const handelValidateCaptcha = () => {
-    const user_captcha_value = captchaRef.current.value;
+  const handelValidateCaptcha = (e) => {
+    const user_captcha_value = e.target.value;
     console.log(user_captcha_value);
     if (validateCaptcha(user_captcha_value) == true) {
       setDisabled(false);
@@ -42,12 +66,18 @@ const Login = () => {
       className="hero  min-h-screen "
       style={{ backgroundImage: `url(${loginBg})` }}
     >
+      <Helmet>
+        <title>Bistro | Login</title>
+      </Helmet>
       <div className="hero-content flex-col md:flex-row lg:gap-48 md:gap-16">
         <div className="text-center lg:text-left flex-1">
           <img src={loginImg} alt="" />
         </div>
         <div className="card flex-1 shrink-0">
           <form onSubmit={handelLogin} className="card-body">
+            <div className=" font-bold text-center lg:text-5xl md:text-4xl text-3xl md:mb-10 mb-5 text-dark-900 dark:text-white">
+              Sign In
+            </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -77,23 +107,23 @@ const Login = () => {
                 </a>
               </label>
             </div>
-            <div className="form-control">
+            <div className="form-control space-y-2">
               <LoadCanvasTemplate />
               <input
+                onBlur={handelValidateCaptcha}
                 type="text"
                 placeholder="type the above characters "
                 name="captcha"
-                ref={captchaRef}
                 className="input input-bordered"
               />
-              <button
-                onClick={handelValidateCaptcha}
+              {/* <button
                 type="reset"
                 className="btn btn-outline btn-sm btn-warning mt-3"
               >
                 validate
-              </button>
+              </button> */}
             </div>
+
             <div className="form-control mt-6">
               <button
                 type="submit"

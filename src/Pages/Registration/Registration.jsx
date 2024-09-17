@@ -1,247 +1,183 @@
-import { NavLink } from "react-router-dom";
+import loginImg from "../../assets/others/authentication2.png";
+import loginBg from "../../assets/others/authentication.png";
+import { Link } from "react-router-dom";
+import { FaFacebookF, FaGoogle } from "react-icons/fa";
+import { PiGithubLogoFill } from "react-icons/pi";
+import { useForm } from "react-hook-form";
+import { useContext } from "react";
+import { AuthContext } from "../../Providers/AuthProvider/AuthProvider";
+import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const Registration = () => {
-  const handelRegistration = (event) => {
-    event.preventDefault();
-    const form = event.target;
-    const name = form.name.value;
-    const email = form.email.value;
-    const password = form.password.value;
-    const confirmPassword = form.confirmPassword.value;
-    const userInfo = { name, email, password, confirmPassword };
-    console.log(userInfo);
+  const { createUser } = useContext(AuthContext);
+  const {
+    register,
+    handleSubmit,
+    // watch,
+    formState: { errors },
+  } = useForm(); // Call useForm() as a function
+
+  const onSubmit = (data) => {
+    const { name, email, password, confirmPassword } = data;
+    if (password === confirmPassword) {
+      createUser(email, password)
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          console.log(name, user);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: `${(errorCode, errorMessage)}`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          // ..
+        });
+    }
   };
 
   return (
-    <div className="pt-20 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700">
-      <hr />
-      <div className="p-4 sm:p-7">
-        <div className="text-center">
-          <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
-            Sign in
-          </h1>
-          <p className="mt-2 text-sm text-gray-600 dark:text-neutral-400">
-            Already have an account?
-            <NavLink
-              to="/login"
-              className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium
-                 dark:text-blue-500"
-            >
-              Log in here
-            </NavLink>
-          </p>
+    <div
+      className="hero min-h-screen"
+      style={{ backgroundImage: `url(${loginBg})` }}
+    >
+      <Helmet>
+        <title>Bistro | Registration</title>
+      </Helmet>
+      <div className="hero-content flex-col md:flex-row-reverse lg:gap-48 md:gap-16">
+        <div className="text-center lg:text-left flex-1">
+          <img src={loginImg} alt="Login" />
         </div>
-
-        <div className="mt-5">
-          <button
-            type="button"
-            className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border 
-              border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 
-              disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 
-              dark:focus:bg-neutral-800"
-          >
-            {/* google logo from preline components library */}
-            <svg
-              className="w-4 h-auto"
-              width="46"
-              height="47"
-              viewBox="0 0 46 47"
-              fill="none"
-            >
-              <path
-                d="M46 24.0287C46 22.09 45.8533 20.68 45.5013 19.2112H23.4694V27.9356H36.4069C36.1429 30.1094 34.7347 33.37 31.5957 35.5731L31.5663 35.8669L38.5191 41.2719L38.9885 41.3306C43.4477 37.2181 46 31.1669 46 24.0287Z"
-                fill="#4285F4"
+        <div className="card flex-1 shrink-0">
+          <form onSubmit={handleSubmit(onSubmit)} className="card-body">
+            <div className="font-bold text-center lg:text-5xl md:text-4xl text-3xl md:mb-10 mb-5 text-dark-900 dark:text-white">
+              Sign Up
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Name</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Name"
+                {...register("name", { required: true })}
+                className="input input-bordered"
               />
-              <path
-                d="M23.4694 47C29.8061 47 35.1161 44.9144 39.0179 41.3012L31.625 35.5437C29.6301 36.9244 26.9898 37.8937 23.4987 37.8937C17.2793 37.8937 12.0281 33.7812 10.1505 28.1412L9.88649 28.1706L2.61097 33.7812L2.52296 34.0456C6.36608 41.7125 14.287 47 23.4694 47Z"
-                fill="#34A853"
+              {errors.name && <span>This field is required</span>}
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Email</span>
+              </label>
+              <input
+                type="email"
+                placeholder="Email"
+                {...register("email", { required: true })}
+                className="input input-bordered"
               />
-              <path
-                d="M10.1212 28.1413C9.62245 26.6725 9.32908 25.1156 9.32908 23.5C9.32908 21.8844 9.62245 20.3275 10.0918 18.8588V18.5356L2.75765 12.8369L2.52296 12.9544C0.909439 16.1269 0 19.7106 0 23.5C0 27.2894 0.909439 30.8731 2.49362 34.0456L10.1212 28.1413Z"
-                fill="#FBBC05"
+              {errors.email && <span>This field is required</span>}
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Password</span>
+              </label>
+              <input
+                type="password"
+                placeholder="Password"
+                className="input input-bordered"
+                {...register("password", {
+                  required: true,
+                  minLength: 6,
+                  maxLength: 16,
+                  pattern: /(?=.*[A-Z])(?=.*[!@#$&.*])(?=.*[0-9])(?=.*[a-z])/,
+                })}
               />
-              <path
-                d="M23.4694 9.07688C27.8699 9.07688 30.8622 10.9863 32.5344 12.5725L39.1645 6.11C35.0867 2.32063 29.8061 0 23.4694 0C14.287 0 6.36607 5.2875 2.49362 12.9544L10.0918 18.8588C11.9987 13.1894 17.25 9.07688 23.4694 9.07688Z"
-                fill="#EB4335"
+              {/* {errors.password && <span>Password required</span>} */}
+              {errors.password?.type === "minLength" && (
+                <span>Password must be 6 to 16 characters required</span>
+              )}
+              {errors.password?.type === "maxLength" && (
+                <span>Password must be 6 to 16 characters required</span>
+              )}
+              {errors.password?.type === "pattern" && (
+                <span>
+                  Password must have one uppercase one lowercase one number and
+                  one special characters
+                </span>
+              )}
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Confirm Password</span>
+              </label>
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                className="input input-bordered"
+                {...register("confirmPassword", {
+                  required: true,
+                  minLength: 6,
+                  maxLength: 16,
+                  pattern: /(?=.*[A-Z])(?=.*[!@#$&.*])(?=.*[0-9])(?=.*[a-z])/,
+                })}
               />
-            </svg>
-            Continue with Google
-          </button>
-
-          <div
-            className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 
-            before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-neutral-500 dark:before:border-neutral-600 
-            dark:after:border-neutral-600"
-          >
-            Or
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handelRegistration}>
-            <div className="grid gap-y-10">
-              {/* Form Group */}
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm mb-2 dark:text-white"
-                >
-                  Name
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="
-                      py-3 px-4 block w-full border-gray-00 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 
-                      disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 
-                      dark:placeholder-neutral-500 dark:focus:ring-neutral-600 border-2
-                      "
-                    required
-                    aria-describedby="name-error"
-                  />
-                  <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
-                    <svg
-                      className="size-5 text-red-500"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      viewBox="0 0 16 16"
-                      aria-hidden="true"
-                    >
-                      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                    </svg>
-                  </div>
-                </div>
-                <p className="hidden text-xs text-red-600 mt-2" id="name-error">
-                  Please Enter Your Name
-                </p>
-              </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm mb-2 dark:text-white"
-                >
-                  Email address
-                </label>
-                <div className="relative">
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="
-                      py-3 px-4 block w-full border-gray-00 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 
-                      disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 
-                      dark:placeholder-neutral-500 dark:focus:ring-neutral-600 border-2
-                      "
-                    required
-                    aria-describedby="email-error"
-                  />
-                  <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
-                    <svg
-                      className="size-5 text-red-500"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      viewBox="0 0 16 16"
-                      aria-hidden="true"
-                    >
-                      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                    </svg>
-                  </div>
-                </div>
-                <p
-                  className="hidden text-xs text-red-600 mt-2"
-                  id="email-error"
-                >
-                  Please include a valid email address so we can get back to you
-                </p>
-              </div>
-              {/* End Form Group */}
-
-              {/* Form Group */}
-              {/* password */}
-              <div>
-                <div className="flex justify-between items-center">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm mb-2 dark:text-white"
-                  >
-                    Password
-                  </label>
-                </div>
-                <div className="relative">
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    className="
-                      py-3 px-4 block w-full  border-2 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 
-                      disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 
-                      dark:placeholder-neutral-500 dark:focus:ring-neutral-600
-                      "
-                    required
-                    aria-describedby="password-error"
-                  />
-                </div>
-              </div>
-              {/* Confirm password */}
-              <div>
-                <div className="flex justify-between items-center">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm mb-2 dark:text-white"
-                  >
-                    Confirm Password
-                  </label>
-                </div>
-                <div className="relative">
-                  <input
-                    type="password"
-                    id="ConfirmPassword"
-                    name="confirmPassword"
-                    className="
-                      py-3 px-4 block w-full  border-2 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 
-                      disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 
-                      dark:placeholder-neutral-500 dark:focus:ring-neutral-600
-                      "
-                    required
-                    aria-describedby="password-error"
-                  />
-                </div>
-              </div>
-              {/* End Form Group */}
-
-              {/* Checkbox */}
-              <div>
-                <div className="flex justify-start items-center gap-5">
-                  <input type="checkbox" className="checkbox checkbox-info" />
-                  <p className="label-text">
-                    accept all{" "}
-                    <span
-                      className="
-                          text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500
-                          "
-                    >
-                      terms and conditions
-                    </span>
-                  </p>
-                </div>
-              </div>
-              {/* End Checkbox */}
-              {/* Submit button */}
+              {errors.confirmPassword?.type === "minLength" && (
+                <span>Password must be 6 to 16 characters required</span>
+              )}
+              {errors.confirmPassword?.type === "maxLength" && (
+                <span>Password must be 6 to 16 characters required</span>
+              )}
+              {errors.confirmPassword?.type === "pattern" && (
+                <span>
+                  Password must have one uppercase one lowercase one number and
+                  one special characters
+                </span>
+              )}
+              {/* {errors.confirmPassword && <span>Password required</span>} */}
+            </div>
+            <div className="form-control mt-6">
               <button
                 type="submit"
-                className="
-                  w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg bg-blue-600 text-white 
-                  hover:bg-blue-700 focus:outline-none focus:bg-blue-800 disabled:opacity-50 
-                  "
+                className="btn btn-warning btn-outline border-1 border-b-8"
               >
-                Sign in
+                Register Now
               </button>
             </div>
           </form>
-          {/* End Form */}
+          <div className="space-y-5">
+            <p className="text-[#D1A054] text-lg text-center">
+              Already registered?{" "}
+              <span className="font-semibold">
+                <Link to="/login">Go to log in</Link>
+              </span>
+            </p>
+            <p className="text-center text-lg">Or sign in with</p>
+            <div className="flex justify-center items-center gap-5 font-bold">
+              <button className="btn btn-outline rounded-full">
+                <FaGoogle />
+              </button>
+              <button className="btn btn-outline rounded-full">
+                <FaFacebookF />
+              </button>
+              <button className="btn btn-outline rounded-full">
+                <PiGithubLogoFill />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

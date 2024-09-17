@@ -2,7 +2,35 @@ import { Link, NavLink } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import logo from "../../../assets/logo.png";
 
+import Swal from "sweetalert2";
+import { useContext } from "react";
+import { AuthContext } from "../../../Providers/AuthProvider/AuthProvider";
+
 const Navbar = () => {
+  const { logOut, user } = useContext(AuthContext);
+
+  const handelLogOut = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You well be logged out!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Log out!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logOut().then(() => {
+          Swal.fire({
+            title: "Log Out!",
+            text: "Logout successful .",
+            icon: "success",
+          });
+        });
+      }
+    });
+  };
+
   const links = (
     <>
       <li>
@@ -73,9 +101,16 @@ const Navbar = () => {
             <li>
               <Link>Profile</Link>
             </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
+
+            {user ? (
+              <li>
+                <Link onClick={handelLogOut}>Logout</Link>
+              </li>
+            ) : (
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>
