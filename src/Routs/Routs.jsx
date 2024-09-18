@@ -5,6 +5,8 @@ import Menu from "../Pages/Menu/Menu/Menu";
 import Order from "../Pages/Order/Order/Order";
 import Login from "../Pages/Login/Login";
 import Registration from "../Pages/Registration/Registration";
+import Secret from "../Pages/Shared/Secret/Secret";
+import PrivetRouts from "./PrivetRouts";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +32,14 @@ const router = createBrowserRouter([
       {
         path: "/registration",
         element: <Registration></Registration>,
+      },
+      {
+        path: "/secret",
+        element: (
+          <PrivetRouts>
+            <Secret></Secret>
+          </PrivetRouts>
+        ),
       },
     ],
   },

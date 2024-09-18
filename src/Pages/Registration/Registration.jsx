@@ -1,6 +1,6 @@
 import loginImg from "../../assets/others/authentication2.png";
 import loginBg from "../../assets/others/authentication.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { PiGithubLogoFill } from "react-icons/pi";
 import { useForm } from "react-hook-form";
@@ -10,30 +10,45 @@ import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
 
 const Registration = () => {
-  const { createUser } = useContext(AuthContext);
+  const { createUser, updateUserProfile } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
+    reset,
     // watch,
     formState: { errors },
   } = useForm(); // Call useForm() as a function
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    const { name, email, password, confirmPassword } = data;
+    const { name, email, password, confirmPassword, photoUrl } = data;
     if (password === confirmPassword) {
       createUser(email, password)
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Your work has been saved",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          console.log(name, user);
-          // ...
+
+          updateUserProfile(name, photoUrl)
+            .then(() => {
+              // Profile updated!
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Your work has been saved",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              navigate("/");
+              console.log(user);
+              // ...
+              reset;
+              // ...
+            })
+            .catch((error) => {
+              // An error occurred
+              console.error(error);
+              // ...
+            });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -45,6 +60,7 @@ const Registration = () => {
             showConfirmButton: false,
             timer: 1500,
           });
+
           // ..
         });
     }
@@ -78,6 +94,18 @@ const Registration = () => {
                 className="input input-bordered"
               />
               {errors.name && <span>This field is required</span>}
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Photo Url</span>
+              </label>
+              <input
+                type="text"
+                placeholder="photoUrl"
+                {...register("PhotoUrl", { required: true })}
+                className="input input-bordered"
+              />
+              {errors.photoUrl && <span>Photo Url is required</span>}
             </div>
             <div className="form-control">
               <label className="label">
