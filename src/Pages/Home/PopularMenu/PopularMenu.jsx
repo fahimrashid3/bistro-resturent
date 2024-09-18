@@ -18,7 +18,7 @@ const PopularMenu = () => {
           <MenuItem key={item._id} item={item}></MenuItem>
         ))}
       </div>
-      <Link className="mt-5 mx flex justify-center">
+      <Link to="/order/offered" className="mt-5 mx flex justify-center">
         <button className="btn btn-warning hover:btn-neutral btn-outline border-0 border-b-4 ">
           View Full Menu
         </button>

@@ -5,9 +5,13 @@ import logo from "../../../assets/logo.png";
 import Swal from "sweetalert2";
 import { useContext } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider/AuthProvider";
+// import { IoCartOutline } from "react-icons/io5";
+import cartIcon from "../../../assets/icon/151-1511569_cart-notifications-free-shopping-cart-favicon-hd-png-removebg-preview.png";
+import useCart from "../../../hooks/useCart";
 
 const Navbar = () => {
   const { logOut, user } = useContext(AuthContext);
+  const [cart] = useCart();
 
   const handelLogOut = () => {
     Swal.fire({
@@ -48,6 +52,14 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink to="/dashboard">Dashboard</NavLink>
+      </li>
+      <li>
+        <NavLink to="/">
+          <button className="btn">
+            <img src={cartIcon} className="w-12 " alt="" />
+            <div className="badge badge-secondary">{cart.length}</div>
+          </button>
+        </NavLink>
       </li>
     </>
   );
