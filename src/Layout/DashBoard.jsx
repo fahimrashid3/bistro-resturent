@@ -6,54 +6,94 @@ import {
   FaHome,
   FaPhone,
   FaShoppingCart,
+  FaUsers,
+  FaUtensils,
 } from "react-icons/fa";
 import { MdOutlineMenuOpen, MdReviews } from "react-icons/md";
 import { FaShop } from "react-icons/fa6";
 
 const DashBoard = () => {
   // todo : get isAdmin value from database
-  // const isAdmin = true;
+  const isAdmin = true;
   return (
     <div className="flex">
       {/* dashboard side bar */}
-      <div className="w-72 min-h-screen bg-[#D1A054] p-10">
+      <div className="w-80 min-h-screen bg-[#D1A054] p-10">
         <ul className="menu text-lg">
-          <li>
-            <NavLink to="/dashboard/userHome">
-              <FaHome></FaHome>
-              User Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/reservation">
-              <FaCalendar></FaCalendar>
-              Reservation
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/paymentHistory">
-              <FaDollarSign></FaDollarSign>
-              Payment History
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/cart">
-              <FaShoppingCart />
-              My cart
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/review">
-              <MdReviews />
-              Reviews
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/bookings">
-              <FaCalendarCheck />
-              My Bookings
-            </NavLink>
-          </li>
+          {isAdmin ? (
+            <>
+              <li>
+                <NavLink to="/dashboard/adminHome">
+                  <FaHome></FaHome>
+                  Admin Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/addItems">
+                  <FaUtensils />
+                  add items
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/manageItems">
+                  <MdOutlineMenuOpen></MdOutlineMenuOpen>
+                  Manage Items
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/dashboard/bookings">
+                  <FaCalendarCheck />
+                  Manage Bookings
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/users">
+                  <FaUsers />
+                  All Users
+                </NavLink>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <NavLink to="/dashboard/userHome">
+                  <FaHome></FaHome>
+                  User Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/reservation">
+                  <FaCalendar></FaCalendar>
+                  Reservation
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/paymentHistory">
+                  <FaDollarSign></FaDollarSign>
+                  Payment History
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/cart">
+                  <FaShoppingCart />
+                  My cart
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/review">
+                  <MdReviews />
+                  Reviews
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/bookings">
+                  <FaCalendar />
+                  My Bookings
+                </NavLink>
+              </li>
+            </>
+          )}
           <div className="divider"></div>
           {/* shared nav */}
           <li>
