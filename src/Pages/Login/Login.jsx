@@ -1,8 +1,6 @@
 import loginImg from "../../assets/others/authentication2.png";
 import loginBg from "../../assets/others/authentication.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import { PiGithubLogoFill } from "react-icons/pi";
 
 // for captcha
 import {
@@ -14,6 +12,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
+import SocialLogin from "../../Compunents/SocialLogin/SocialLogin";
 
 const Login = () => {
   const [disabled, setDisabled] = useState(true);
@@ -147,16 +146,8 @@ const Login = () => {
               </span>
             </p>
             <p className="text-center text-lg">Or sign in with</p>
-            <div className=" flex justify-center items-center gap-5 font-bold">
-              <button className="btn btn-outline rounded-full">
-                <FaGoogle />
-              </button>
-              <button className="btn btn-outline rounded-full">
-                <FaFacebookF />
-              </button>
-              <button className="btn btn-outline rounded-full">
-                <PiGithubLogoFill />
-              </button>
+            <div>
+              <SocialLogin></SocialLogin>
             </div>
           </div>
         </div>

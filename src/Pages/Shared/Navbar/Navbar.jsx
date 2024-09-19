@@ -54,7 +54,7 @@ const Navbar = () => {
         <NavLink to="/dashboard">Dashboard</NavLink>
       </li>
       <li>
-        <NavLink to="/">
+        <NavLink to="/dashboard/cart">
           <button className="btn">
             <img src={cartIcon} className="w-12 " alt="" />
             <div className="badge badge-secondary">{cart.length}</div>

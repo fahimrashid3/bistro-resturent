@@ -1,15 +1,16 @@
 import loginImg from "../../assets/others/authentication2.png";
 import loginBg from "../../assets/others/authentication.png";
 import { Link, useNavigate } from "react-router-dom";
-import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import { PiGithubLogoFill } from "react-icons/pi";
 import { useForm } from "react-hook-form";
 import { useContext } from "react";
 import { AuthContext } from "../../Providers/AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import SocialLogin from "../../Compunents/SocialLogin/SocialLogin";
 
 const Registration = () => {
+  const axiosPublic = useAxiosPublic();
   const { createUser, updateUserProfile } = useContext(AuthContext);
   const {
     register,
@@ -17,32 +18,44 @@ const Registration = () => {
     reset,
     // watch,
     formState: { errors },
-  } = useForm(); // Call useForm() as a function
+  } = useForm();
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
     const { name, email, password, confirmPassword, photoUrl } = data;
     if (password === confirmPassword) {
+      // create User using firebase from authProvider
       createUser(email, password)
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
+          // Profile updated!
 
           updateUserProfile(name, photoUrl)
             .then(() => {
-              // Profile updated!
-              Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Your work has been saved",
-                showConfirmButton: false,
-                timer: 1500,
+              const userInfo = {
+                name: name,
+                email: user.email,
+                photoUrl: photoUrl,
+              };
+              // create user entry in database
+
+              axiosPublic.post("/users", userInfo).then((res) => {
+                if (res.data.insertedId) {
+                  Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your work has been saved",
+                    showConfirmButton: false,
+                    timer: 1000,
+                  });
+                  navigate("/");
+
+                  // ...
+                  reset;
+                  // ...
+                }
               });
-              navigate("/");
-              console.log(user);
-              // ...
-              reset;
-              // ...
             })
             .catch((error) => {
               // An error occurred
@@ -194,16 +207,8 @@ const Registration = () => {
               </span>
             </p>
             <p className="text-center text-lg">Or sign in with</p>
-            <div className="flex justify-center items-center gap-5 font-bold">
-              <button className="btn btn-outline rounded-full">
-                <FaGoogle />
-              </button>
-              <button className="btn btn-outline rounded-full">
-                <FaFacebookF />
-              </button>
-              <button className="btn btn-outline rounded-full">
-                <PiGithubLogoFill />
-              </button>
+            <div>
+              <SocialLogin></SocialLogin>
             </div>
           </div>
         </div>
