@@ -55,9 +55,11 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink to="/dashboard/cart">
-          <button className="btn">
+          <button className="btn btn-ghost ">
             <img src={cartIcon} className="w-12 " alt="" />
-            <div className="badge badge-secondary">{cart.length}</div>
+            <div className="badge badge-secondary -ml-7 -mb-6">
+              {cart.length}
+            </div>
           </button>
         </NavLink>
       </li>
