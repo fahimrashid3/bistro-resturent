@@ -11,10 +11,11 @@ import {
 } from "react-icons/fa";
 import { MdOutlineMenuOpen, MdReviews } from "react-icons/md";
 import { FaShop } from "react-icons/fa6";
+import useAdmin from "../hooks/useAdmin";
 
 const DashBoard = () => {
   // todo : get isAdmin value from database
-  const isAdmin = true;
+  const [isAdmin] = useAdmin();
   return (
     <div className="flex">
       {/* dashboard side bar */}

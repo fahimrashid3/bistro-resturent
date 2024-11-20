@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import useCart from "../../../hooks/useCart";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { FaTrash } from "react-icons/fa";
 
 const Cart = () => {
   const [cart, refetch] = useCart();
@@ -73,22 +74,9 @@ const Cart = () => {
                 <th>
                   <button
                     onClick={() => handelDelete(item._id)}
-                    className="btn btn-square btn-outline btn-error"
+                    className="text-red-500 text-2xl btn btn-ghost"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
+                    <FaTrash></FaTrash>
                   </button>
                 </th>
               </tr>

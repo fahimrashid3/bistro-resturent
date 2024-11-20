@@ -9,13 +9,14 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
-
 import app from "../../Firebase/Firebase.config";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
+  const axiosPublic = useAxiosPublic();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const googleProvider = new GoogleAuthProvider();
@@ -52,16 +53,25 @@ const AuthProvider = ({ children }) => {
       setUser(currentUser);
       // console.log("current User", currentUser);
       if (currentUser) {
-        // todo:get token and store client site
+        // TODO:get token and store client site
+        const userInfo = {
+          email: currentUser.email,
+        };
+        axiosPublic.post("/jwt", userInfo).then((res) => {
+          if (res.data.token) {
+            localStorage.setItem("access-token", res.data.token);
+          }
+        });
       } else {
-        // todo :do somethings
+        // TODO :do somethings
+        localStorage.removeItem("access-token");
       }
       setLoading(false);
     });
     return () => {
       return unsubscribe;
     };
-  }, []);
+  }, [axiosPublic]);
 
   const authInfo = {
     user,

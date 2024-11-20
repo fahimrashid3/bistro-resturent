@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { MdGroups2 } from "react-icons/md";
 import Swal from "sweetalert2";
+import { RiDeleteBin2Line } from "react-icons/ri";
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
@@ -38,6 +39,7 @@ const AllUsers = () => {
       }
     });
   };
+  // TODO: if delete user delete user related all data from orders and etc
 
   const handelDeleteUser = (user) => {
     Swal.fire({
@@ -68,7 +70,7 @@ const AllUsers = () => {
     <div>
       <div className="flex justify-evenly my-4">
         <h1 className="text-3xl">All users</h1>
-        <h1 className="text-3xl">Total users {users.length}</h1>
+        <h1 className="text-3xl">Total users : {users.length}</h1>
       </div>
       <div className="overflow-x-auto">
         <table className="table table-zebra">
@@ -103,22 +105,9 @@ const AllUsers = () => {
                 <td>
                   <button
                     onClick={() => handelDeleteUser(user)}
-                    className="btn btn-square btn-outline btn-error"
+                    className="text-3xl text-red-500 btn btn-ghost"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
+                    <RiDeleteBin2Line />
                   </button>
                 </td>
               </tr>

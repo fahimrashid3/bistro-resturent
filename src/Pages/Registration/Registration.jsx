@@ -2,16 +2,15 @@ import loginImg from "../../assets/others/authentication2.png";
 import loginBg from "../../assets/others/authentication.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useContext } from "react";
-import { AuthContext } from "../../Providers/AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import SocialLogin from "../../Compunents/SocialLogin/SocialLogin";
+import useAuth from "../../hooks/useAuth";
 
 const Registration = () => {
   const axiosPublic = useAxiosPublic();
-  const { createUser, updateUserProfile } = useContext(AuthContext);
+  const { createUser, updateUserProfile } = useAuth();
   const {
     register,
     handleSubmit,
@@ -22,61 +21,60 @@ const Registration = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    const { name, email, password, confirmPassword, photoUrl } = data;
-    if (password === confirmPassword) {
-      // create User using firebase from authProvider
-      createUser(email, password)
-        .then((userCredential) => {
-          // Signed up
-          const user = userCredential.user;
-          // Profile updated!
+    const { name, email, password, photoUrl } = data;
 
-          updateUserProfile(name, photoUrl)
-            .then(() => {
-              const userInfo = {
-                name: name,
-                email: user.email,
-                photoUrl: photoUrl,
-              };
-              // create user entry in database
+    // create User using firebase from authProvider
+    createUser(email, password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        // Profile updated!
 
-              axiosPublic.post("/users", userInfo).then((res) => {
-                if (res.data.insertedId) {
-                  Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Your work has been saved",
-                    showConfirmButton: false,
-                    timer: 1000,
-                  });
-                  navigate("/");
+        updateUserProfile(name, photoUrl)
+          .then(() => {
+            const userInfo = {
+              name: name,
+              email: user.email,
+              photoUrl: photoUrl,
+            };
+            // create user entry in database
 
-                  // ...
-                  reset;
-                  // ...
-                }
-              });
-            })
-            .catch((error) => {
-              // An error occurred
-              console.error(error);
-              // ...
+            axiosPublic.post("/users", userInfo).then((res) => {
+              if (res.data.insertedId) {
+                Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: "Registration success",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+                navigate("/");
+
+                // ...
+                reset;
+                // ...
+              }
             });
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: `${(errorCode, errorMessage)}`,
-            showConfirmButton: false,
-            timer: 1500,
+          })
+          .catch((error) => {
+            // An error occurred
+            console.error(error);
+            // ...
           });
-
-          // ..
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: `${(errorCode, errorMessage)}`,
+          showConfirmButton: false,
+          timer: 1500,
         });
-    }
+
+        // ..
+      });
   };
 
   return (
@@ -161,7 +159,7 @@ const Registration = () => {
                 </span>
               )}
             </div>
-            <div className="form-control">
+            {/* <div className="form-control">
               <label className="label">
                 <span className="label-text">Confirm Password</span>
               </label>
@@ -188,8 +186,7 @@ const Registration = () => {
                   one special characters
                 </span>
               )}
-              {/* {errors.confirmPassword && <span>Password required</span>} */}
-            </div>
+            </div> */}
             <div className="form-control mt-6">
               <button
                 type="submit"
