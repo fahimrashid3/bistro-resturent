@@ -1,18 +1,20 @@
 import { Navigate, useLocation } from "react-router-dom";
+import useAdmin from "../hooks/useAdmin";
 import useAuth from "../hooks/useAuth";
-// import { BallTriangle } from "react-loader-spinner";
 
-const PrivetRouts = ({ children }) => {
+const AdminRouts = ({ children }) => {
+  const [isAdmin, isAdminLoading] = useAdmin();
   const { user, loading } = useAuth();
   const location = useLocation();
-  if (loading) {
+  if (loading || isAdminLoading) {
     return (
       <span className="loading loading-infinity loading-lg text-warning"></span>
     );
   }
-  if (user) {
+  if (user && isAdmin) {
     return children;
   }
   return <Navigate state={{ from: location }} replace to="/login"></Navigate>;
 };
-export default PrivetRouts;
+
+export default AdminRouts;

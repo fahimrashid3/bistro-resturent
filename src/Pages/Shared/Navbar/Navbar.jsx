@@ -112,10 +112,6 @@ const Navbar = () => {
             tabIndex={0}
             className="dropdown-content menu bg-dark-900 text-white dark:bg-gray-400 dark:text-dark-900  rounded-box z-[1] w-52 p-2 shadow"
           >
-            <li>
-              <Link>Profile</Link>
-            </li>
-
             {user ? (
               <li>
                 <Link onClick={handelLogOut}>Logout</Link>

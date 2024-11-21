@@ -4,6 +4,7 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+// TODO:store the config in the .env file
 const firebaseConfig = {
   apiKey: "AIzaSyDr_DSr57SLoRoZpGjVY1ZLmwRL8aA21_E",
   authDomain: "bistro-resturent-dd90b.firebaseapp.com",
