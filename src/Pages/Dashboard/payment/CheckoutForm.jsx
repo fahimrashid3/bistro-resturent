@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useCart from "../../../hooks/useCart";
 import useAuth from "../../../hooks/useAuth";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutForm = () => {
   const [error, setError] = useState("");
@@ -10,17 +12,20 @@ const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const axiosSecure = useAxiosSecure();
-  const [cart] = useCart();
+  const [cart, refetch] = useCart();
   const { user } = useAuth();
   const [clientSecret, setClientSecret] = useState("");
+  const navigate = useNavigate();
   const price = cart.reduce((total, item) => total + item.price, 0).toFixed(2);
   console.log(price);
 
   useEffect(() => {
-    axiosSecure.post("/create-payment-intent", { price }).then((res) => {
-      console.log(res.data);
-      setClientSecret(res.data.clientSecret);
-    });
+    if (price) {
+      axiosSecure.post("/create-payment-intent", { price }).then((res) => {
+        console.log(res.data);
+        setClientSecret(res.data.clientSecret);
+      });
+    }
   }, [axiosSecure, price]);
 
   const handelSubmit = async (event) => {
@@ -68,7 +73,19 @@ const CheckoutForm = () => {
           email: user.email,
           name: user.name || "nam nai",
           price: price,
-          date: new Date(), //TODO:convert time to utc time using moment js
+          //TODO:convert time to utc time using moment js
+          date: new Date().toLocaleDateString("en-GB", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          }),
+          //TODO:convert time to utc time using moment js
+          time: new Date().toLocaleTimeString("en-US", {
+            timeZone: "Asia/Dhaka", //only for bangladesh Set your desired timezone
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          }),
           cartIds: cart.map((item) => item._id),
           menuItemIds: cart.map((item) => item.menuId),
           status: "pending",
@@ -76,6 +93,17 @@ const CheckoutForm = () => {
         };
         const res = await axiosSecure.post("/payments", paymentInfo);
         console.log("payment saved", res.data);
+        if (res.data?.paymentResult?.insertedId) {
+          refetch();
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Payment successful",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          navigate("/dashboard/paymentHistory");
+        }
       }
     }
   };

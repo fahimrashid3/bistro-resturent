@@ -53,20 +53,21 @@ const AuthProvider = ({ children }) => {
       setUser(currentUser);
       // console.log("current User", currentUser);
       if (currentUser) {
-        // TODO:get token and store client site
+        // get token and store client site
         const userInfo = {
           email: currentUser.email,
         };
         axiosPublic.post("/jwt", userInfo).then((res) => {
           if (res.data.token) {
             localStorage.setItem("access-token", res.data.token);
+            setLoading(false);
           }
         });
       } else {
-        // TODO :do somethings
+        // remove when user logged out
         localStorage.removeItem("access-token");
+        setLoading(false);
       }
-      setLoading(false);
     });
     return () => {
       return unsubscribe;

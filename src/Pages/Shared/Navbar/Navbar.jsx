@@ -1,16 +1,19 @@
 import { Link, NavLink } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import logo from "../../../assets/logo.png";
+// import useAdmin from "../../../hooks/useAdmin";
 
 import Swal from "sweetalert2";
-import { useContext } from "react";
-import { AuthContext } from "../../../Providers/AuthProvider/AuthProvider";
+// import { useContext } from "react";
+// import { AuthContext } from "../../../Providers/AuthProvider/AuthProvider";
 // import { IoCartOutline } from "react-icons/io5";
 import cartIcon from "../../../assets/icon/151-1511569_cart-notifications-free-shopping-cart-favicon-hd-png-removebg-preview.png";
 import useCart from "../../../hooks/useCart";
+import useAuth from "../../../hooks/useAuth";
 
 const Navbar = () => {
-  const { logOut, user } = useContext(AuthContext);
+  const { logOut, user } = useAuth();
+  // const [isAdmin] = useAdmin();
   const [cart] = useCart();
 
   const handelLogOut = () => {
@@ -37,6 +40,9 @@ const Navbar = () => {
 
   const links = (
     <>
+      {/* {
+      user?isAdmin?
+    } */}
       <li>
         <NavLink to="/">Home</NavLink>
       </li>
