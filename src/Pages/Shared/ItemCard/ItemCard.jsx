@@ -34,6 +34,8 @@ const ItemCard = ({ item }) => {
             price,
           };
           AxiosSecure.post("/carts", cartItem).then((res) => {
+            // refetch the card items to add item automatically
+            refetch();
             console.log(res.data);
           });
 
@@ -44,8 +46,6 @@ const ItemCard = ({ item }) => {
             showConfirmButton: false,
             timer: 1000,
           });
-          // refetch the card items to add item automatically
-          refetch();
         }
       });
     } else {

@@ -11,8 +11,8 @@ const AddItems = () => {
   const axiosSecure = useAxiosSecure();
   const { register, reset, handleSubmit } = useForm();
   // TODO: cloud name and presets key should be in the .env file
-  const cloud_name = "dipwayvsu";
-  const preset_key = "bistro"; // Use your preset name here
+  const cloud_name = import.meta.env.VITE_cloud_name;
+  const preset_key = import.meta.env.VITE_preset_key; // Use your preset name here
   // const [image, serImage] = useState("");
   const onSubmit = async (data) => {
     setDisabled(true);

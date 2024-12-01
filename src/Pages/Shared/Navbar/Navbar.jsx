@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import logo from "../../../assets/logo.png";
 // import useAdmin from "../../../hooks/useAdmin";
@@ -7,14 +7,14 @@ import Swal from "sweetalert2";
 // import { useContext } from "react";
 // import { AuthContext } from "../../../Providers/AuthProvider/AuthProvider";
 // import { IoCartOutline } from "react-icons/io5";
-import cartIcon from "../../../assets/icon/151-1511569_cart-notifications-free-shopping-cart-favicon-hd-png-removebg-preview.png";
-import useCart from "../../../hooks/useCart";
+// import useCart from "../../../hooks/useCart";
 import useAuth from "../../../hooks/useAuth";
+import NavLinks from "./NavLink";
 
 const Navbar = () => {
   const { logOut, user } = useAuth();
   // const [isAdmin] = useAdmin();
-  const [cart] = useCart();
+  // const [cart] = useCart();
 
   const handelLogOut = () => {
     Swal.fire({
@@ -38,39 +38,6 @@ const Navbar = () => {
     });
   };
 
-  const links = (
-    <>
-      {/* {
-      user?isAdmin?
-    } */}
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
-      <li>
-        <NavLink to="/menu">Our Menu</NavLink>
-      </li>
-
-      <li>
-        <NavLink to="/order/pizza">Order Food</NavLink>
-      </li>
-      <li>
-        <NavLink to="/contactUs">Contact Us</NavLink>
-      </li>
-      <li>
-        <NavLink to="/dashboard">Dashboard</NavLink>
-      </li>
-      <li>
-        <NavLink to="/dashboard/cart">
-          <button className="btn btn-ghost ">
-            <img src={cartIcon} className="w-12 " alt="" />
-            <div className="badge badge-secondary -ml-7 -mb-6">
-              {cart.length}
-            </div>
-          </button>
-        </NavLink>
-      </li>
-    </>
-  );
   return (
     <div className="navbar fixed z-10 bg-opacity-50 text-white max-w-screen-2xl bg-dark-700 rounded-lg">
       <div className="navbar-start">
@@ -95,7 +62,7 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
-            {links}
+            <NavLinks></NavLinks>
           </ul>
         </div>
         <Link to="/" className="btn btn-ghost">
@@ -103,7 +70,10 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">{links}</ul>
+        <ul className="menu menu-horizontal px-1">
+          {" "}
+          <NavLinks></NavLinks>
+        </ul>
       </div>
       <div className="navbar-end">
         <div className="dropdown dropdown-end">

@@ -14,8 +14,8 @@ const UpdateItem = () => {
   const { register, reset, handleSubmit } = useForm();
 
   // Cloudinary configuration
-  const cloud_name = "dipwayvsu";
-  const preset_key = "bistro";
+  const cloud_name = import.meta.env.VITE_cloud_name;
+  const preset_key = import.meta.env.VITE_preset_key;
 
   const onSubmit = async (data) => {
     try {

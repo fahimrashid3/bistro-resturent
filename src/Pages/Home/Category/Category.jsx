@@ -34,7 +34,7 @@ const Category = () => {
           className="mySwiper"
         >
           <SwiperSlide>
-            <Link to="/order/salads">
+            <Link to={`/order/offered`}>
               <img className="w-full" src={img1} alt="" />
               <h3 className="uppercase text-white text-4xl text-center -mt-16">
                 Offered
@@ -42,7 +42,7 @@ const Category = () => {
             </Link>
           </SwiperSlide>
           <SwiperSlide>
-            <Link to="/order/pizza">
+            <Link to={`/order/pizza`}>
               <img className="w-full" src={img2} alt="" />
               <h3 className="uppercase text-white text-4xl text-center -mt-16">
                 Pizza
@@ -50,16 +50,16 @@ const Category = () => {
             </Link>
           </SwiperSlide>
           <SwiperSlide>
-            <Link to="/order/salads">
+            <Link to={`/order/soup`}>
               <img className="w-full" src={img3} alt="" />
               <h3 className="uppercase text-white text-4xl text-center -mt-16">
-                Soups
+                Soup
               </h3>
             </Link>
           </SwiperSlide>
 
           <SwiperSlide>
-            <Link to="/order/salads">
+            <Link to={`/order/dessert`}>
               <img className="w-full" src={img4} alt="" />
               <h3 className="uppercase text-white text-4xl text-center -mt-16">
                 dessert
@@ -67,7 +67,15 @@ const Category = () => {
             </Link>
           </SwiperSlide>
           <SwiperSlide>
-            <Link to="/order/salads">
+            <Link to={`/order/salad`}>
+              <img className="w-full" src={img5} alt="" />
+              <h3 className="uppercase text-white text-4xl text-center -mt-16">
+                salad
+              </h3>
+            </Link>
+          </SwiperSlide>
+          <SwiperSlide>
+            <Link to={`/order/drinks`}>
               <img className="w-full" src={img5} alt="" />
               <h3 className="uppercase text-white text-4xl text-center -mt-16">
                 salads
