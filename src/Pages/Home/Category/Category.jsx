@@ -12,6 +12,7 @@ import img3 from "../../../assets/home/slide3.jpg";
 import img4 from "../../../assets/home/slide4.jpg";
 import img5 from "../../../assets/home/slide5.jpg";
 import SectionTitle from "../../../Compunents/SectionTitle/SectionTitle";
+import { Link } from "react-router-dom";
 
 const Category = () => {
   return (
@@ -33,34 +34,45 @@ const Category = () => {
           className="mySwiper"
         >
           <SwiperSlide>
-            <img className="w-full" src={img1} alt="" />
-            <h3 className="uppercase text-white text-4xl text-center -mt-16">
-              salads
-            </h3>
+            <Link to="/order/salads">
+              <img className="w-full" src={img1} alt="" />
+              <h3 className="uppercase text-white text-4xl text-center -mt-16">
+                Offered
+              </h3>
+            </Link>
           </SwiperSlide>
           <SwiperSlide>
-            <img className="w-full" src={img2} alt="" />
-            <h3 className="uppercase text-white text-4xl text-center -mt-16">
-              Pizzas
-            </h3>
+            <Link to="/order/pizza">
+              <img className="w-full" src={img2} alt="" />
+              <h3 className="uppercase text-white text-4xl text-center -mt-16">
+                Pizza
+              </h3>
+            </Link>
           </SwiperSlide>
           <SwiperSlide>
-            <img className="w-full" src={img3} alt="" />
-            <h3 className="uppercase text-white text-4xl text-center -mt-16">
-              Soups
-            </h3>
+            <Link to="/order/salads">
+              <img className="w-full" src={img3} alt="" />
+              <h3 className="uppercase text-white text-4xl text-center -mt-16">
+                Soups
+              </h3>
+            </Link>
           </SwiperSlide>
-          <SwiperSlide id="initial">
-            <img className="w-full" src={img4} alt="" />
-            <h3 className="uppercase text-white text-4xl text-center -mt-16">
-              dess
-            </h3>
+
+          <SwiperSlide>
+            <Link to="/order/salads">
+              <img className="w-full" src={img4} alt="" />
+              <h3 className="uppercase text-white text-4xl text-center -mt-16">
+                dessert
+              </h3>
+            </Link>
           </SwiperSlide>
           <SwiperSlide>
-            <img className="w-full" src={img5} alt="" />
-            <h3 className="uppercase text-white text-4xl text-center -mt-16">
-              salads
-            </h3>
+            <Link to="/order/salads">
+              <img className="w-full" src={img5} alt="" />
+              <h3 className="uppercase text-white text-4xl text-center -mt-16">
+                salads
+              </h3>
+            </Link>
           </SwiperSlide>
         </Swiper>
       </div>

@@ -9,53 +9,82 @@ import { FaUtensils } from "react-icons/fa";
 
 const UpdateItem = () => {
   const oldMenu = useLoaderData();
-
   const [disabled, setDisabled] = useState(false);
   const axiosSecure = useAxiosSecure();
   const { register, reset, handleSubmit } = useForm();
-  // TODO: cloud name and presets key should be in the .env file
+
+  // Cloudinary configuration
   const cloud_name = "dipwayvsu";
-  const preset_key = "bistro"; // Use your preset name here
+  const preset_key = "bistro";
+
   const onSubmit = async (data) => {
-    console.log(data);
-    setDisabled(true);
-    const { image } = data;
-    // img upload to to cloudinary.com
-    const file = image[0]; // Get the image file
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", preset_key);
+    try {
+      console.log("Form Data Submitted:", data); // Debugging data
+      setDisabled(true);
 
-    const res = await axios.post(
-      `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
-      formData
-    );
+      const { image } = data;
+      const file = image && image[0];
+      let uploadedImageUrl = oldMenu.image;
 
-    if (res) {
+      // Check if a new image is provided
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", preset_key);
+
+        // Upload to Cloudinary
+        const res = await axios.post(
+          `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+          formData
+        );
+        uploadedImageUrl = res.data.secure_url;
+      }
+
       const updatedMenuItem = {
         name: data.name || oldMenu.name,
         recipe: data.recipe || oldMenu.recipe,
-        image: res.data.secure_url || oldMenu.image,
+        image: uploadedImageUrl,
         category: data.category || oldMenu.category,
         price: parseFloat(data.price) || oldMenu.price,
       };
-      console.log(updatedMenuItem);
+
+      console.log("Updated Menu Item:", updatedMenuItem);
+
+      // Update the menu item in the backend
       const menuRes = await axiosSecure.patch(
         `/menu/${oldMenu._id}`,
         updatedMenuItem
       );
-      console.log(menuRes.data);
+
+      console.log("Backend Response:", menuRes.data);
+
       if (menuRes.data.modifiedCount) {
         reset();
-        setDisabled(false);
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "New item added successfully",
+          title: "Menu item updated successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        Swal.fire({
+          position: "top-end",
+          icon: "warning",
+          title: "No changes detected",
           showConfirmButton: false,
           timer: 1500,
         });
       }
+    } catch (error) {
+      console.error("Error Updating Item:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
+    } finally {
+      setDisabled(false);
     }
   };
 
@@ -63,7 +92,7 @@ const UpdateItem = () => {
     <div>
       <SectionTitle
         heading="Update Item"
-        subHeading="whats New ?"
+        subHeading="What's New?"
       ></SectionTitle>
 
       <form
@@ -76,8 +105,8 @@ const UpdateItem = () => {
           </label>
           <input
             type="text"
-            placeholder={oldMenu.name}
-            {...register("name", { required: true })}
+            defaultValue={oldMenu.name} // Use defaultValue
+            {...register("name")}
             className="input input-bordered"
           />
         </div>
@@ -85,50 +114,48 @@ const UpdateItem = () => {
         <div className="md:flex w-full gap-4">
           <div className="form-control flex-1">
             <label className="label">
-              <span className="label-text">Email</span>
+              <span className="label-text">Category</span>
             </label>
-
             <select
-              defaultValue="default"
-              {...register("category", { required: true })}
-              className="select select-bordered w-full "
+              defaultValue={oldMenu.category}
+              {...register("category")}
+              className="select select-bordered w-full"
             >
-              <option disabled value="default">
-                Previous category was : {oldMenu.category}
-              </option>
-              <option value="dessert">dessert</option>
-              <option value="pizza">pizza</option>
-              <option value="salad">salad</option>
-              <option value="soups">soups</option>
-              <option value="offered">offered</option>
-              <option value="drinks">drinks</option>
+              <option value="dessert">Dessert</option>
+              <option value="pizza">Pizza</option>
+              <option value="salad">Salad</option>
+              <option value="soups">Soups</option>
+              <option value="offered">Offered</option>
+              <option value="drinks">Drinks</option>
             </select>
           </div>
+
           <div className="form-control flex-1">
             <label className="label">
               <span className="label-text">Price</span>
             </label>
             <input
-              type="text"
-              placeholder={oldMenu.price}
-              {...register("price", { required: true })}
+              type="number"
+              defaultValue={oldMenu.price} // Use defaultValue
+              {...register("price")}
               className="input input-bordered"
             />
           </div>
         </div>
+
         <div className="form-control">
           <label className="label">
-            <span className="label-text">recipe</span>
+            <span className="label-text">Recipe</span>
           </label>
           <textarea
-            type="text"
-            placeholder={oldMenu.recipe}
-            {...register("recipe", { required: true })}
+            defaultValue={oldMenu.recipe} // Use defaultValue
+            {...register("recipe")}
             className="input input-bordered lg:min-h-52 md:min-h-40 min-h-32"
           />
         </div>
+
         <div className="form-control">
-          <input type="file" {...register("image", { required: true })} />
+          <input type="file" {...register("image")} />
         </div>
 
         <div className="form-control mt-6">
@@ -137,8 +164,8 @@ const UpdateItem = () => {
             type="submit"
             className="btn btn-warning btn-outline border-1 border-b-8"
           >
-            <FaUtensils></FaUtensils>
-            Add item
+            <FaUtensils />
+            Update Item
           </button>
         </div>
       </form>

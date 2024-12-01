@@ -73,21 +73,21 @@ const Order = () => {
             {salad.map((item) => (
               <ItemCard key={item._id} item={item}></ItemCard>
             ))}
-          </div>{" "}
+          </div>
         </TabPanel>
         <TabPanel>
           <div className="grid lg:grid-cols-4 md:grid-cols-2 lg:gap-10 md:gap-12 gap-0 lg:mt-16 md:mt-10 ">
             {soup.map((item) => (
               <ItemCard key={item._id} item={item}></ItemCard>
             ))}
-          </div>{" "}
+          </div>
         </TabPanel>
         <TabPanel>
           <div className="grid lg:grid-cols-4 md:grid-cols-2 lg:gap-10 md:gap-12 gap-0 lg:mt-16 md:mt-10 ">
             {drinks.map((item) => (
               <ItemCard key={item._id} item={item}></ItemCard>
             ))}
-          </div>{" "}
+          </div>
         </TabPanel>
       </Tabs>
     </div>

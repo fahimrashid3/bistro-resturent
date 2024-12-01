@@ -110,7 +110,7 @@ const DashBoard = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/shop">
+            <NavLink to="/menu">
               <FaShop></FaShop>
               Shop
             </NavLink>
@@ -124,7 +124,8 @@ const DashBoard = () => {
         </ul>
       </div>
       {/* dashboard content */}
-      <div className="flex-grow md:p-10">
+      {/* <div className="flex-grow md:p-10"> */}
+      <div className="flex-grow p-10 overflow-y-auto h-screen">
         <Outlet></Outlet>
       </div>
     </div>

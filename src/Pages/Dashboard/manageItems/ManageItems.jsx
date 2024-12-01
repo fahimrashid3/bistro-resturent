@@ -10,6 +10,9 @@ import { Link } from "react-router-dom";
 const ManageItems = () => {
   const axiosSecure = useAxiosSecure();
   const [menu, loading, refetch] = useMenu();
+
+  // load menu date
+
   //   const {
   //     data: menu = [],
   //     refetch,
@@ -40,6 +43,7 @@ const ManageItems = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
+        console.log("clicked ok");
         axiosSecure.delete(`/menu/${id}`).then((res) => {
           if (res.data.deletedCount > 0) {
             console.log("deleted");
