@@ -10,8 +10,10 @@ import Swal from "sweetalert2";
 // import useCart from "../../../hooks/useCart";
 import useAuth from "../../../hooks/useAuth";
 import NavLinks from "./NavLink";
+import useAdmin from "../../../hooks/useAdmin";
 
 const Navbar = () => {
+  const [isAdmin] = useAdmin();
   const { logOut, user } = useAuth();
   // const [isAdmin] = useAdmin();
   // const [cart] = useCart();
@@ -88,9 +90,16 @@ const Navbar = () => {
             tabIndex={0}
             className="dropdown-content menu bg-dark-900 text-white dark:bg-gray-400 dark:text-dark-900  rounded-box z-[1] w-52 p-2 shadow"
           >
-            <li>
-              <Link to="/dashboard/userHome">User Home</Link>
-            </li>
+            {isAdmin ? (
+              <li>
+                <Link to="/dashboard/adminHome">Admin Home</Link>
+              </li>
+            ) : (
+              <li>
+                <Link to="/dashboard/userHome">User Home</Link>
+              </li>
+            )}
+            <li></li>
             {user ? (
               <li>
                 <Link onClick={handelLogOut}>Logout</Link>

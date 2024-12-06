@@ -82,20 +82,20 @@ const UserHome = () => {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 text-black dark:text-white">
       <h2 className="text-3xl">Hi, welcome Back</h2>
-      <div className="flex gap-5 justify-center">
+      <div className="md:flex gap-5 justify-center">
         <div className="bg-orange-200 rounded-lg p-10 space-y-5 flex-1">
           <h2 className="text-3xl text-center font-bold">Your Information</h2>
           {userInfo.photoUrl ? (
             <img
-              className="rounded-full w-96 h-96 mx-auto"
+              className="rounded-full w-60 h-60 mx-auto"
               src={userInfo?.photoUrl}
               alt="User Avatar"
             />
           ) : (
             <img
-              className="rounded-full w-96 h-96 mx-auto"
+              className="rounded-full w-60 h-60 mx-auto"
               src={user.photoURL}
               alt="User Avatar"
             />

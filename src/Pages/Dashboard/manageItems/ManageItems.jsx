@@ -97,7 +97,7 @@ const ManageItems = () => {
                 <td>
                   {
                     <Link to={`/dashboard/updateItm/${item._id}`}>
-                      <button className="text-3xl text-orange-500 btn btn-ghost">
+                      <button className="text-3xl text-orange-500 dark:text-orange-300 btn btn-ghost">
                         <MdOutlineModeEditOutline />
                       </button>
                     </Link>
@@ -106,7 +106,7 @@ const ManageItems = () => {
                 <td>
                   <button
                     onClick={() => handelDeleteItems(item._id)}
-                    className="text-3xl text-red-500 btn btn-ghost"
+                    className="text-3xl text-red-500 dark:text-red-300 btn btn-ghost"
                   >
                     <RiDeleteBin2Line />
                   </button>

@@ -4,7 +4,7 @@ import { IoArrowBack } from "react-icons/io5";
 
 const ErrorPage = () => {
   return (
-    <div>
+    <div className="bg-white  dark:bg-black">
       <Link to="/">
         <button className="flex items-center gap-2 mx-auto mt-20 font-rancho font-bold text-3xl text-primary-2">
           <IoArrowBack /> Back to home

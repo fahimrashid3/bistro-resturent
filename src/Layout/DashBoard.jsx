@@ -17,7 +17,7 @@ const DashBoard = () => {
   // todo : get isAdmin value from database
   const [isAdmin] = useAdmin();
   return (
-    <div className="flex">
+    <div className="flex text-dark-900 dark:text-white">
       {/* dashboard side bar */}
       <div className="w-80 min-h-screen bg-[#D1A054] p-10">
         <ul className="menu text-lg">
