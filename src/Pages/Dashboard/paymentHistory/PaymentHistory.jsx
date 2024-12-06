@@ -49,7 +49,7 @@ const PaymentHistory = () => {
                 <th>
                   <label>{index + 1} </label>
                 </th>
-                <td className="text-2xl font-semibold">{item.name}</td>
+                <td className="text-2xl font-semibold">{user.displayName}</td>
                 <td className="text-2xl font-semibold">{item.date}</td>
                 <td className="text-2xl font-semibold">{item.time}</td>
                 <td className="text-2xl font-semibold">{item.price}</td>

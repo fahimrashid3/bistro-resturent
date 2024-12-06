@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet-async";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import SocialLogin from "../../Compunents/SocialLogin/SocialLogin";
 import useAuth from "../../hooks/useAuth";
+import axios from "axios";
 
 const Registration = () => {
   const axiosPublic = useAxiosPublic();
@@ -19,9 +20,22 @@ const Registration = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const cloud_name = import.meta.env.VITE_cloud_name;
+  const preset_key = import.meta.env.VITE_preset_key;
+  const onSubmit = async (data) => {
+    const { name, email, password, image } = data;
+    // img upload to to cloudinary.com
+    const file = image[0]; // Get the image file
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", preset_key);
 
-  const onSubmit = (data) => {
-    const { name, email, password, photoUrl } = data;
+    const res = await axios.post(
+      `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+      formData
+    );
+    const photoUrl = res.data.secure_url;
+    console.log(photoUrl);
 
     // create User using firebase from authProvider
     createUser(email, password)
@@ -106,7 +120,7 @@ const Registration = () => {
               />
               {errors.name && <span>This field is required</span>}
             </div>
-            <div className="form-control">
+            {/* <div className="form-control">
               <label className="label">
                 <span className="label-text">Photo Url</span>
               </label>
@@ -117,7 +131,7 @@ const Registration = () => {
                 className="input input-bordered"
               />
               {errors.photoUrl && <span>Photo Url is required</span>}
-            </div>
+            </div> */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -187,6 +201,12 @@ const Registration = () => {
                 </span>
               )}
             </div> */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Profile Image</span>
+              </label>
+              <input type="file" {...register("image", { required: true })} />
+            </div>
             <div className="form-control mt-6">
               <button
                 type="submit"

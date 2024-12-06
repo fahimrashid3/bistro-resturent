@@ -1,8 +1,10 @@
 import { NavLink } from "react-router-dom";
 import cartIcon from "../../../assets/icon/151-1511569_cart-notifications-free-shopping-cart-favicon-hd-png-removebg-preview.png";
 import useCart from "../../../hooks/useCart";
+import useAdmin from "../../../hooks/useAdmin";
 const NavLinks = () => {
   const [cart] = useCart();
+  const [isAdmin] = useAdmin();
 
   return (
     <>
@@ -77,7 +79,9 @@ const NavLinks = () => {
               viewTransitionName: isTransitioning ? "slide" : "",
             };
           }}
-          to="/dashboard"
+          // isAdmin
+          to={isAdmin ? "/dashboard/adminHome" : "/dashboard/userHome"}
+          // to="/dashboard"
         >
           Dashboard
         </NavLink>
