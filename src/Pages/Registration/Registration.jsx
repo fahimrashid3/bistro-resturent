@@ -8,9 +8,12 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import SocialLogin from "../../Compunents/SocialLogin/SocialLogin";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
+import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Registration = () => {
   const axiosPublic = useAxiosPublic();
+
   const { createUser, updateUserProfile } = useAuth();
   const {
     register,
@@ -20,6 +23,11 @@ const Registration = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  // show and hide password
+  const handelShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   const cloud_name = import.meta.env.VITE_cloud_name;
   const preset_key = import.meta.env.VITE_preset_key;
   const onSubmit = async (data) => {
@@ -148,17 +156,26 @@ const Registration = () => {
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input
-                type="password"
-                placeholder="Password"
-                className="input input-bordered"
-                {...register("password", {
-                  required: true,
-                  minLength: 6,
-                  maxLength: 16,
-                  pattern: /(?=.*[A-Z])(?=.*[!@#$&.*])(?=.*[0-9])(?=.*[a-z])/,
-                })}
-              />
+              <div className="flex items-center">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  className="input input-bordered bg-white text-dark-900 w-full"
+                  {...register("password", {
+                    required: true,
+                    minLength: 6,
+                    maxLength: 16,
+                    pattern:
+                      /(?=.*[A-Z])(?=.*[!@#$&.])(?=.*[0-9])(?=.*[a-z]).{6,16}/,
+                  })}
+                />
+                <div
+                  onClick={handelShowPassword}
+                  className="absolute right-12 text-xl cursor-pointer"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </div>
+              </div>
               {/* {errors.password && <span>Password required</span>} */}
               {errors.password?.type === "minLength" && (
                 <span>Password must be 6 to 16 characters required</span>

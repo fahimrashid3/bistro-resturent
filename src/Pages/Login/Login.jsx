@@ -13,6 +13,7 @@ import { AuthContext } from "../../Providers/AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
 import SocialLogin from "../../Compunents/SocialLogin/SocialLogin";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const [disabled, setDisabled] = useState(true);
@@ -21,6 +22,11 @@ const Login = () => {
   const location = useLocation();
 
   const from = location.state?.from?.pathname || "/";
+  const [showPassword, setShowPassword] = useState(false);
+  // show and hide password
+  const handelShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   // console.log(from);
 
   useEffect(() => {
@@ -50,9 +56,13 @@ const Login = () => {
         // ...
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        console.log("Error Code:", error.code);
+        console.log("Error Message:", error.message);
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: error.message,
+        });
       });
   };
 
@@ -98,13 +108,20 @@ const Login = () => {
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input
-                type="password"
-                placeholder="password"
-                name="password"
-                className="input input-bordered"
-                required
-              />
+              <div className="flex items-center">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  className="input input-bordered bg-white text-dark-900 w-full"
+                  name="password"
+                />
+                <div
+                  onClick={handelShowPassword}
+                  className="absolute right-12 text-xl cursor-pointer"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </div>
+              </div>
               <label className="label">
                 <a href="#" className="label-text-alt link link-hover">
                   Forgot password?
@@ -116,16 +133,10 @@ const Login = () => {
               <input
                 onBlur={handelValidateCaptcha}
                 type="text"
-                placeholder="type the above characters "
+                placeholder="type the above characters & click out side"
                 name="captcha"
                 className="input input-bordered"
               />
-              {/* <button
-                type="reset"
-                className="btn btn-outline btn-sm btn-warning mt-3"
-              >
-                validate
-              </button> */}
             </div>
 
             <div className="form-control mt-6">
